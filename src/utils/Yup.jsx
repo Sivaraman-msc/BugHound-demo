@@ -8,7 +8,7 @@ export const LoginForm=yup.object({
 export const SignUpFom=yup.object({
     name:yup.string().required('Name is required'),
     email:yup.string().email("Invalid email").required('Email is required'),
-    password:yup.string().min(8,"Minimum 8 char required").required('Password is required'),
+    password:yup.string().matches( /^(?=.*[a-zA-Z])(?=.*[!@#$%^&*])/,'Password must include at least one letter and one special character').min(8,"Minimum 8 char required").required('Password is required'),
     role:yup.string().oneOf(['Developer','Tester','ProjectManager'],'Invalid Role value') .required("Role is required"),
     profile:yup.string().required('Image required')
 }).required()

@@ -9,8 +9,8 @@ export default function AuthNavBar({ variant = 'login' }) {
   const toggleMenu = () => setIsOpen(!isOpen);
 
   const isLogin = variant === 'login';
-  const oppositeRoute = isLogin ? '/signin' : '/';
-  const oppositeLabel = isLogin ? 'SignIn' : 'SignUp';
+  const oppositeRoute = isLogin ? '/signup' : '/';
+  const oppositeLabel = isLogin ? 'SignUp' : 'SignIn';
 
   return (
     <nav className="w-full px-4 bg-gray-700 shadow-md flex flex-col lg:flex-row items-center justify-between">

@@ -28,14 +28,19 @@ export default function Login() {
   };
 
   const onSubmit = async () => {
-    const mockUser = {
-      name: 'Frontend Only User',
-      email: formdata.email,
-    };
+  const storedUser = JSON.parse(localStorage.getItem('user'));
 
+  if (
+    storedUser &&
+    storedUser.email === formdata.email &&
+    storedUser.password === formdata.password
+  ) {
     setMessage('Login Successful!');
     navigate('/dashboard');
-  };
+  } else {
+    setMessage('Invalid email or password');
+  }
+};
 
   return (
     <>
