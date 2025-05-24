@@ -40,41 +40,47 @@ export default function SignUp() {
   };
 
   const handleClick = async (data) => {
-    const newUser = {
-      name: data.name,
-      email: data.email,
-      password: data.password,
-      role: data.role,
-      profile: formdata.profile ? URL.createObjectURL(formdata.profile) : null,
-    };
-    localStorage.setItem('user', JSON.stringify(newUser));
+  // ✅ Manually check if image is missing
+  if (!formdata.profile) {
+    setMessage('Image is required.');
+    return;
+  }
 
-    const formData = new FormData();
-    formData.append('name', data.name);
-    formData.append('email', data.email);
-    formData.append('password', data.password);
-    formData.append('role', data.role);
-    if (formdata.profile) {
-      formData.append('profile', formdata.profile);
-    }
-
-    try {
-      const res = await fetch('https://formspree.io/f/xnndkaaz', {
-        method: 'POST',
-        body: formData,
-      });
-
-      if (res.ok) {
-        setMessage('Signup Successful!');
-        navigate('/dashboard');
-      } else {
-        setMessage('Formspree submission failed.');
-      }
-    } catch (error) {
-      console.error(error);
-      setMessage('Something went wrong.');
-    }
+  // ✅ Save to localStorage
+  const newUser = {
+    name: data.name,
+    email: data.email,
+    password: data.password,
+    role: data.role,
+    profile: URL.createObjectURL(formdata.profile),
   };
+  localStorage.setItem('user', JSON.stringify(newUser));
+
+  // ✅ Submit to Formspree
+  const formData = new FormData();
+  formData.append('name', data.name);
+  formData.append('email', data.email);
+  formData.append('password', data.password);
+  formData.append('role', data.role);
+  formData.append('profile', formdata.profile);
+
+  try {
+    const res = await fetch('https://formspree.io/f/xnndkaaz', {
+      method: 'POST',
+      body: formData,
+    });
+
+    if (res.ok) {
+      setMessage('Signup Successful!');
+      navigate('/dashboard');
+    } else {
+      setMessage('Formspree submission failed.');
+    }
+  } catch (error) {
+    console.error(error);
+    setMessage('Something went wrong.');
+  }
+};
 
   return (
     <>
@@ -157,7 +163,6 @@ export default function SignUp() {
                 type="file"
                 name="profile"
                 onChange={handleChange}
-                {...register('profile')}
                 className="hidden"
                 accept="image/*"
               />
