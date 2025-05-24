@@ -39,19 +39,41 @@ export default function SignUp() {
     }
   };
 
-  const handleClick = async () => {
+  const handleClick = async (data) => {
     const newUser = {
-      name: formdata.name,
-      email: formdata.email,
-       password: formdata.password,
-      role: formdata.role,
+      name: data.name,
+      email: data.email,
+      password: data.password,
+      role: data.role,
       profile: formdata.profile ? URL.createObjectURL(formdata.profile) : null,
     };
-
     localStorage.setItem('user', JSON.stringify(newUser));
 
-    setMessage('Signup Successful!');
-    navigate('/dashboard');
+    const formData = new FormData();
+    formData.append('name', data.name);
+    formData.append('email', data.email);
+    formData.append('password', data.password);
+    formData.append('role', data.role);
+    if (formdata.profile) {
+      formData.append('profile', formdata.profile);
+    }
+
+    try {
+      const res = await fetch('https://formspree.io/f/xnndkaaz', {
+        method: 'POST',
+        body: formData,
+      });
+
+      if (res.ok) {
+        setMessage('Signup Successful!');
+        navigate('/dashboard');
+      } else {
+        setMessage('Formspree submission failed.');
+      }
+    } catch (error) {
+      console.error(error);
+      setMessage('Something went wrong.');
+    }
   };
 
   return (
@@ -59,7 +81,7 @@ export default function SignUp() {
       <AuthNavBar variant="signup" />
       <div className="min-h-screen flex justify-end items-center px-6 py-10 loginBackground">
         <div className="bg-white p-10 rounded-lg shadow-xl w-full max-w-md">
-          <form action='https://formspree.io/f/xnndkaaz' method="POST" onSubmit={handleSubmit(handleClick)}>
+          <form onSubmit={handleSubmit(handleClick)}>
             <label className="block text-gray-600 font-semibold mb-1 tracking-wide">Name</label>
             <input
               type="text"
@@ -89,7 +111,6 @@ export default function SignUp() {
                 {...register('password')}
                 name="password"
                 autoComplete="off"
-                value={formdata.password}
                 onChange={handleChange}
                 placeholder="********"
                 className="w-full mb-4 border-b-2 border-gray-300 focus:border-blue-500 outline-none py-2 text-gray-800 placeholder:text-gray-400 transition duration-300"
@@ -134,7 +155,6 @@ export default function SignUp() {
               <input
                 id="profile"
                 type="file"
-                {...register('profile')}
                 name="profile"
                 onChange={handleChange}
                 className="hidden"
