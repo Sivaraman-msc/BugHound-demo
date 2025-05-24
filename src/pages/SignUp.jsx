@@ -157,6 +157,7 @@ export default function SignUp() {
                 type="file"
                 name="profile"
                 onChange={handleChange}
+                {...register('profile')}
                 className="hidden"
                 accept="image/*"
               />
