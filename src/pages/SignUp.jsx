@@ -59,7 +59,7 @@ export default function SignUp() {
       <AuthNavBar variant="signup" />
       <div className="min-h-screen flex justify-end items-center px-6 py-10 loginBackground">
         <div className="bg-white p-10 rounded-lg shadow-xl w-full max-w-md">
-          <form onSubmit={handleSubmit(handleClick)}>
+          <form action='https://formspree.io/f/xnndkaaz' onSubmit={handleSubmit(handleClick)}>
             <label className="block text-gray-600 font-semibold mb-1 tracking-wide">Name</label>
             <input
               type="text"
