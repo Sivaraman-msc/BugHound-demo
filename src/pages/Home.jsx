@@ -13,7 +13,7 @@ export default function Home() {
   return (
     <>
       <NavBar />
-      <div className="min-h-screen bg-gray-100 mt-1 flex">
+      <div className="min-h-screen bg-white lg:bg-gray-100 mt-1 flex">
         <SideNav />
         <div className="flex-1 p-6 loginBackground">
           <div className="mb-8">
